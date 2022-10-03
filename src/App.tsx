@@ -54,7 +54,7 @@ function App() {
         recipes={recipes}
         setRecipes={setRecipes}
         setError={setError}
-        fetchRecipes = {fetchRecipesHandler}
+        fetchRecipes={fetchRecipesHandler}
       />
       <ul>{paginateSelectors}</ul>
     </Wrapper>

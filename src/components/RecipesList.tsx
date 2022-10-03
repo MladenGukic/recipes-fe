@@ -23,11 +23,7 @@ export const RecipesList: FC<Props> = ({
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
-      const data = await response.json();
-      const transformedRecipes = data.recipes.map((recipesData: Recipe[]) => {
-        return recipesData;
-      });
-      setRecipes(transformedRecipes);
+      fetchRecipes("", 1);
     } catch (error: any) {
       setError(error.message);
     }
@@ -39,6 +35,7 @@ export const RecipesList: FC<Props> = ({
       fetchRecipes(target.value, 1);
     }
   };
+
   return (
     <>
       <ul>
