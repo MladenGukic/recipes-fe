@@ -1,16 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import styled from "styled-components";
-import { RecipesList } from "./components/RecipesList";
+import { RecipesList } from "./components/RecipesList/RecipesList";
+import { Recipe } from "./models";
+import { PageSelectorList } from "./components/PageSelectorList/PageSelectorList";
 
-export interface Recipe {
-  title: string;
-  description: string;
-  ingredients: object[];
-  id: string;
-  created: string;
-  modified: string;
-}
 function App() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [error, setError] = useState("");
@@ -34,17 +28,7 @@ function App() {
       setError(error.message);
     }
   };
-  const arrayOfNumber: number[] = Array.from(
-    { length: numberOfPages },
-    (_, i) => i + 1
-  );
-  const paginateSelectors = arrayOfNumber.map((num, index) => {
-    return (
-      <PageSelector key={index} onClick={() => fetchRecipesHandler("", num)}>
-        {num}
-      </PageSelector>
-    );
-  });
+
   useEffect(() => {
     fetchRecipesHandler("", 1);
   }, []);
@@ -56,7 +40,10 @@ function App() {
         setError={setError}
         fetchRecipes={fetchRecipesHandler}
       />
-      <ul>{paginateSelectors}</ul>
+      <PageSelectorList
+        fetchRecipes={fetchRecipesHandler}
+        numberOfPages={numberOfPages}
+      />
     </Wrapper>
   );
 }
@@ -67,31 +54,8 @@ const Wrapper = styled.div`
   width: 500px;
   margin-left: auto;
   margin-right: auto;
-  justify-content: center;
   & h2 {
     display: flex;
-  }
-
-  ul {
-  }
-`;
-
-const PageSelector = styled.div`
-  font-size: 20px;
-  font-weight: bold;
-  width: 32px;
-  height: 40px;
-  padding-top: 20px;
-  margin: 10px;
-  border: 1px solid;
-  border-radius: 8px;
-  float: left;
-  :hover {
-    background-color: rgb(114, 108, 108);
-  }
-
-  :active {
-    background-color: rgb(114, 108, 108);
   }
 `;
 
