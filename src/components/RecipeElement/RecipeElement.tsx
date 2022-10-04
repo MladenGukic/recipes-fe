@@ -1,21 +1,30 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { Recipe } from "../../models";
+import { FetchRecipes, Recipe } from "../../types/types";
 import { DeleteButton } from "../DeleteButton/DeleteButton";
 
-interface Props {
+interface RecipeElementProps {
   recipe: Recipe;
-  fetchRecipes: (searchTerm: string, pageNum: number) => Promise<void>;
+  fetchRecipes: FetchRecipes;
 }
-export const RecipeElement: FC<Props> = ({ recipe, fetchRecipes }) => {
+export const RecipeElement: FC<RecipeElementProps> = ({
+  recipe,
+  fetchRecipes,
+}) => {
+  const { id, title, description } = recipe;
   return (
     <OneRecipe>
       <h3>
-        {recipe.title}
-        <DeleteButton id={recipe.id} fetchRecipes={fetchRecipes} />
+        {title}
+        <DeleteButton
+          id={id}
+          fetchRecipes={(page = 1, searchTerm = "") =>
+            fetchRecipes(page, searchTerm)
+          }
+        />
       </h3>
 
-      <Description>{recipe.description}</Description>
+      <Description>{description}</Description>
     </OneRecipe>
   );
 };

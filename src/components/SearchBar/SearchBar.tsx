@@ -1,15 +1,16 @@
 import { ChangeEvent, FC } from "react";
 import styled from "styled-components";
+import { FetchRecipes } from "../../types/types";
 
-interface Props {
-  fetchRecipes: (searchTerm: string, pageNum: number) => Promise<void>;
+interface SearchBarProps {
+  fetchRecipes: FetchRecipes;
 }
 
-export const SearchBar: FC<Props> = ({ fetchRecipes }) => {
+export const SearchBar: FC<SearchBarProps> = ({ fetchRecipes }) => {
   const filterHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     if (!!target) {
-      fetchRecipes(target.value, 1);
+      fetchRecipes(1, target.value);
     }
   };
 

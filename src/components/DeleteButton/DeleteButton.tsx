@@ -1,20 +1,22 @@
 import { FC } from "react";
 import styled from "styled-components";
+import { FetchRecipes } from "../../types/types";
+import { API_URL } from ".././../API_URL";
 
-interface Props {
+interface DeleteButtonProps {
   id: string;
-  fetchRecipes: (searchTerm: string, pageNum: number) => Promise<void>;
+  fetchRecipes: FetchRecipes;
 }
-export const DeleteButton: FC<Props> = ({ id, fetchRecipes }) => {
+export const DeleteButton: FC<DeleteButtonProps> = ({ id, fetchRecipes }) => {
   const deleteRecipe = async (): Promise<void> => {
     try {
-      const response = await fetch(`http://localhost:8081/recipes/${id}`, {
+      const response = await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
-      fetchRecipes("", 1);
+      fetchRecipes(1, "");
     } catch (error: any) {
       return error.message;
     }

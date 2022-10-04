@@ -2,18 +2,22 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import styled from "styled-components";
 import { RecipesList } from "./components/RecipesList/RecipesList";
-import { Recipe } from "./models";
+import { Recipe } from "./types/types";
 import { PageSelectorList } from "./components/PageSelectorList/PageSelectorList";
+import { API_URL } from "./API_URL";
 
 function App() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [error, setError] = useState("");
   const [numberOfPages, setNumberOfPages] = useState(1);
 
-  const fetchRecipesHandler = async (searchTerm: string, page: number) => {
+  const fetchRecipesHandler = async (
+    page: number = 1,
+    searchTerm: string = ""
+  ) => {
     try {
       const response = await fetch(
-        `http://localhost:8081/recipes?search=${searchTerm}&page=${page}&pageSize=5`
+        `${API_URL}?search=${searchTerm}&page=${page}&pageSize=5`
       );
       if (!response.ok) {
         throw new Error("Something went wrong!");
@@ -30,16 +34,19 @@ function App() {
   };
 
   useEffect(() => {
-    fetchRecipesHandler("", 1);
+    fetchRecipesHandler();
   }, []);
   return (
-    <Wrapper className="App">
+    <Wrapper>
       <RecipesList
         recipes={recipes}
         setRecipes={setRecipes}
         setError={setError}
-        fetchRecipes={fetchRecipesHandler}
+        fetchRecipes={(page = 1, searchTerm = "") =>
+          fetchRecipesHandler(page, searchTerm)
+        }
       />
+      {!!error ? <ErrorMessage>{error}</ErrorMessage> : null}
       <PageSelectorList
         fetchRecipes={fetchRecipesHandler}
         numberOfPages={numberOfPages}
@@ -57,6 +64,10 @@ const Wrapper = styled.div`
   & h2 {
     display: flex;
   }
+`;
+
+const ErrorMessage = styled.strong`
+  color: red;
 `;
 
 export default App;

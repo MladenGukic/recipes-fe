@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { FC } from "react";
+import { FetchRecipes } from "../../types/types";
 
-interface Props {
+interface PageSelectorListProps {
   numberOfPages: number;
-  fetchRecipes: (searchTerm: string, pageNum: number) => Promise<void>;
+  fetchRecipes: FetchRecipes;
 }
 
-export const PageSelectorList: FC<Props> = ({
+export const PageSelectorList: FC<PageSelectorListProps> = ({
   numberOfPages,
   fetchRecipes,
 }) => {
@@ -17,7 +18,7 @@ export const PageSelectorList: FC<Props> = ({
 
   const pageSelectors = arrayOfNumber.map((num, index) => {
     return (
-      <PageSelector key={index} onClick={() => fetchRecipes("", num)}>
+      <PageSelector key={index} onClick={() => fetchRecipes(num, "")}>
         {num}
       </PageSelector>
     );
@@ -36,11 +37,9 @@ const PageSelector = styled.div`
   border: 1px solid;
   border-radius: 8px;
   float: left;
-  :hover {
-    background-color: rgb(114, 108, 108);
-  }
-
+  :hover,
   :active {
+    background-color: rgb(114, 108, 108);
     background-color: rgb(114, 108, 108);
   }
 `;
